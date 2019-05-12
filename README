@@ -1,0 +1,24 @@
+## A Christian Article Website
+
+
+## Setup
+
+Locally (recommended):
+```
+$ mkvirtualenv env
+$ source env/bin/activate
+$ pip install -r requirements.pip
+$ python manage.py createsuperuser
+$ python manage.py migrate
+$ python manage.py runserver
+```
+
+Using Docker:
+
+```sh
+$ docker build .
+$ BUILD_IMAGE_ID = $(docker images | head -n 2 | tail -n 1 | awk '{ print $3 }')
+$ docker create $BUILD_IMAGE_ID 
+$ BUILD_CONTAINER_ID = $(docker ps -a | head -n 2 | tail -n 1 | awk '{print $1}')
+$ docker run $BUILD_CONTAINER_ID
+```
