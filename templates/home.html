@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+{% load article_cards %}
+
+<!-- BEGIN QUOTES -->
+<div class="jumbotron jumbotron-fluid"
+     style="background-image:
+         linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+         url(
+           {% if configurable.welcome_image %}
+             {% static configurable.welcome_image_url %}
+           {% else %}
+             {% static 'hero.jpg' %}
+           {% endif %}
+         )">
+    <div class="container d-flex flex-column justify-content-center"
+        style="height: 378px">
+        <h1 class="display-4 text-light text-center">
+            {% if configurable %}
+            {{ configurable.welcome_title }}
+            {% else %}
+            Let God’s promises shine on your problems
+            {% endif %}
+        </h1>
+        <p class="lead text-light col-6-sm">
+            {% if configurable %}
+            {{ configurable.welcome_text }}
+            {% else %}
+            Life is wasted if we do not grasp the glory of the cross,
+            cherish it for the treasure that it is, and cleave to it
+            as the highest price of every pleasure and the deepest
+            comfort in every pain. What was once foolishness to
+            us—a crucified God—must become our wisdom and our
+            power and our only boast in this world.
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<!-- BEGIN CARDS -->
+<div class="container-fluid">
+    <div class="container-fluid">
+        <h3 class="font-weight-bold">Newest Articles</h3>
+        <div class="text-right">
+            <a class="text-right text-muted font-weight-bold"
+                href="/articles">View all articles	&#10230;</a>
+        </div>
+        {% article_card articles as cards silent per_row[6] deck %}
+        {{ cards }}
+    </div>
+</div>
+
+<!-- BEGIN QUOTE -->
+<div class="jumbotron jumbotron-fluid my-5 p-0 d-flex shadow-lg">
+        <div class="px-5 w-50 align-self-center">
+            <h2 class="font-weight-bold">
+                {{ quote.comment }}
+            </h2>
+            <p class="lead my-3">
+                {{ quote.quote }}
+            </p>
+            <button class="rounded-sm btn btn-dark btn-lg text-decoration-none">
+                {{ quote.quoter }}
+            </button>
+        </div>
+        <div class="ml-auto mr-5 flex-fill" style="
+            height: 349px;
+            width: 680px;
+            background-image: url({% static quote.cover_image_url %})">
+        </div>
+</div>
+
+<!-- BEGIN READING LISTS -->
+<div class="container-fluid">
+    {% for reading_list in reading_lists %}
+    <hr class="invisible" />
+    <div class="card-deck px-4">
+
+        <button class="btn btn-sm btn-danger position-absolute rounded-0 text-uppercase" style="z-index: 600;">{{ reading_list.name }}</button>
+        {% for article in reading_list.articles %}
+          {% if '~EMPTY' in article.name %}
+          <div class="card mt-4 border-0 rounded-0" style="width: 13.83625rem;"></div>
+          {% else %}
+          <div class="card mt-4 rounded-0" style="width: 13.83625rem;">
+              <div class="card-img-top rounded-0"
+                  style="
+                      background-image: url({% static article.cover_image_url %});
+                      height: 124px;"></div>
+              <div class="card-body">
+                <a class="btn btn-link stretched-link text-muted font-weight-bold"
+                    href="/article/{{ article.uuid }}">
+                    {{ article.short_title }}
+                </a>
+              </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+
+<!-- BEGIN ABOUT -->
+<div class="jumbotron jumbotron-fluid my-4">
+    <div class="container d-flex flex-column align-items-center">
+        <div>
+            <h1 class="font-weight-light ">About Narrow Gate</h1>
+        </div>
+
+        <div>
+            <p class="font-weight-light">
+                Since 1956, Narrow Gate has been a trusted beacon
+                spotlighting the way in which Christians can live
+                gospel lives for the strengthening of church and society.
+                Narrow Gate consistently demonstrates through all its
+                media how the true, good, and beautiful gospel can not
+                only transform lives but bring hope and flourishing
+                to individuals, cultures, and communities.
+                This movement now directly reaches over five million
+                Christian leaders every month.
+                Narrow Gate advocates for the church, shapes the
+                evangelical conversation, brings important issues to
+                the forefront, and provides practical solutions for
+                church leaders.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

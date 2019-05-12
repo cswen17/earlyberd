@@ -1,0 +1,10 @@
+Hi {{ author.full_name }},
+
+Thank you for signing up to be an author for Narrow Gate. Please copy and paste the following address into your browser:
+
+{{ author.generate_email_validation_link }}
+
+We look forward to reading your work.
+
+Thanks,
+Narrow Gate

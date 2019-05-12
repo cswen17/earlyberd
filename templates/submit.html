@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% load bootstrap4 %}
+
+<!-- Change this to self hosted -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jodit/3.1.92/jodit.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jodit/3.1.92/jodit.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.js"></script>
+
+<div class="container my-4">
+    <h1 class="display-4">Write an Article</h1>
+</div>
+<!--
+<div class="upload-demo" style="height:400px;"></div>
+-->
+
+<div class="container my-4">
+<form action="/article" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+
+  <input class="btn btn-dark text-white font-weight-bold btn-block" type="submit" value="Submit" />
+</form>
+
+<div class="container mb-4">
+    <!-- Replace with a maintainable href -->
+    <p class="text-muted float-right">
+        Text Editor Powered by
+        <a href="https://xdsoft.net/jodit/">Jodit</a>
+    </p>
+<div>
+<h1 class="display-1 text-white">&nbsp;</h1>
+
+
+<script type="text/javascript">
+  // Button select and submit
+  var editor = new Jodit('#id_html');
+  editor.value = '<p>start</p>';
+</script>
+<!--
+<script>
+$globalFile = null;
+	function demoUpload() {
+		var $uploadCrop;
+
+		function readFile(input, e) {
+ 			if (input.files && input.files[0]) {
+	            var reader = new FileReader();
+	            
+	            reader.onload = function (e) {
+                  $globalFile = e;
+                  console.log(e.target.result);
+					$('.upload-demo').addClass('ready');
+	            	$uploadCrop.croppie('bind', {
+	            		url: e.target.result
+	            	}).then(function(){
+	            		console.log('jQuery bind complete');
+	            	});
+	            	
+	            }
+	            
+	            reader.readAsDataURL(input.files[0]);
+	        }
+	        else {
+		        console.log("Sorry - you're browser doesn't support the FileReader API");
+		    }
+		}
+
+		$uploadCrop = $('.upload-demo').croppie({
+      boundary: {
+        width: 1440,
+        height: 400
+      },
+			viewport: {
+				width: 1440,
+				height: 400
+			},
+			enableExif: true,
+      mouseWheelZoom: 'ctrl'
+		});
+
+		$('#id_cover_image').on('change', function (e) { readFile(this, e); });
+		/*$('.upload-result').on('click', function (ev) {
+			$uploadCrop.croppie('result', {
+				type: 'canvas',
+				size: 'viewport'
+			}).then(function (resp) {
+				popupResult({
+					src: resp
+				});
+			});
+		});*/
+	}
+  demoUpload();
+</script> -->
+
+</div>
+
+{% endblock %}

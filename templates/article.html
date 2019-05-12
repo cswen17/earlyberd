@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% load static %}
+{% load breadcrumbs %}
+
+{% block content %}
+
+{% breadcrumb as b silent custom[/article/<id>] %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        {% for bc in b %}
+        <li class="breadcrumb-item">
+            <a href="{{ bc.url }}">{{ bc.name }}</a>
+        </li>
+        {% endfor %}
+        <li class="breadcrumb-item">
+            <a href="#">{{ article.title }}</a>
+        </li>
+    </ol>
+</nav>
+
+<div class="jumbotron" style="
+    background-image: 
+    linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    url({% static article.cover_image_url %});
+    height: 400px;">
+    <h1 class="display-4 w-50 mx-auto text-white">{{ article.title }}</h1>
+    <p class="lead w-50 mx-auto text-white">By {{ article.author }}</p>
+</div>
+<div class="container w-50">
+    <div class="container">
+        {{ article.html|safe }}
+    </div>
+</div>
+{% endblock %}

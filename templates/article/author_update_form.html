@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+{% load bootstrap4 %}
+{% load static %}
+
+<div class="container">
+    <h1 class="display-4">Account Settings</h1>
+    <h3 class="display-5">Change your basic settings</h3>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <img class="rounded-circle"
+             src="{% static object.cover_image_url %}" />
+        {% bootstrap_form form %}
+        <input type="submit" class="btn btn-lg btn-secondary" value="Save" />
+    </form>
+</div>
+
+{% endblock %}

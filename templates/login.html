@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+{% load bootstrap4 %}
+{% load static %}
+
+<div class="container">
+    <h1 class="display-4">Login to Narrow Gate</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input type="submit" class="btn btn-lg btn-light" value="Login" />
+    </form>
+    <p>Don't have an account? Sign up <a href="/signup">here</a>.
+</div>
+
+{% endblock %}

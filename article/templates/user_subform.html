@@ -1,0 +1,13 @@
+<label for="{{ widget.user_first_name_textinput_id }}">{{ widget.user_first_name_textinput_label }}:</label>
+
+<input type="text" name="{{ widget.user_first_name_textinput_name }}" id="{{ widget.user_first_name_textinput_id }}" value="{{ widget.first_name }}" class="form-control" />
+
+<label for="{{ widget.user_last_name_textinput_id }}">{{ widget.user_last_name_textinput_label }}:</label>
+
+<input type="text" name="{{ widget.user_last_name_textinput_name }}" id="{{ widget.user_last_name_textinput_id }}" value="{{ widget.last_name }}" class="form-control" />
+
+{% if widget.can_edit_email %}
+<label for="{{ widget.user_email_address_textinput_id }}">{{ widget.user_email_address_textinput_label }}:</label>
+
+<input type="text" name="{{ widget.user_email_address_textinput_name }}" id="{{ widget.user_email_address_textinput_id }}" value="{{ widget.email_address }}" class="form-control"/>
+{% endif %}

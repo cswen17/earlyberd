@@ -1,0 +1,52 @@
+<div class="{{ container_type }}">
+    {% load static %}
+    {% for article in row %}
+    <div class="card" style="width: 13.83625rem;">
+        <div
+            class="card-img-top"
+            style="
+                height: 124px;
+                background-image: url(
+                    {% static article.cover_image_url %})" >
+        </div>
+        <div class="card-body text-decoration-none">
+            <div class="d-flex">
+                <a class="
+                   btn btn-link stretched-link
+                   text-muted font-weight-bold"
+                   href="/article/{{ article.uuid }}">
+                    {{ article.short_title }}
+                </a>
+            </div>
+            {% if include_author_name %}
+            <span class="badge badge-white text-muted text-lighter ml-2">
+                {{ article.author }}
+            </span>
+            {% endif %}
+            {% if include_edit_button %}
+                <span class="badge badge-danger ml-4">
+                    <a href="/edit-article/{{ article.uuid }}"
+                       class="font-weight-bold text-white">
+                        Edit
+                    </a>
+                </span>
+            {% endif %}
+            {% if include_delete_button %}
+                <span class="badge badge-dark ml-4">
+                    <a class="text-white"
+                        href="/delete-article/{{ article.uuid }}">
+                        Delete
+                    </a>
+                </span>            
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    {% for empty in padding %}
+    <div class="card mt-4 border-0 rounded-0"
+        style="width: 13.83625rem;">
+    </div>
+    {% endfor %}
+</div>
+<hr class="invisible" />

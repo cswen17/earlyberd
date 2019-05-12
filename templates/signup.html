@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+{% load bootstrap4 %}
+{% load static %}
+
+<div class="container">
+    <h1 class="display-4">Create an Account</h1>
+    <form class="form-group" method="POST" action="/signup">
+
+    {% csrf_token %}
+    {% bootstrap_form form %}
+
+    <input type="submit" class="btn btn-lg btn-light" value="Sign Up" />
+    </form>
+
+</div>
+{% endblock %}

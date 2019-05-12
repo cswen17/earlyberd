@@ -1,0 +1,63 @@
+{
+  "site": [
+    {
+      "name": "Home",
+      "url": "/",
+      "children": [
+        {
+          "name": "Browse",
+          "url": "/articles",
+          "children": [
+            {
+              "name": "<reading-list><custom>",
+              "url": "/reading-list/<id>",
+              "children": []
+            },
+            {
+              "name": "<article><custom>",
+              "url": "/article/<id>",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Your Account",
+          "url": "/author",
+          "children": []
+        },
+        {
+          "name": "Your Articles",
+          "url": "/my-articles",
+          "children": [
+            {
+              "name": "<edit-my-article><custom>",
+              "url": "/edit-article/<pk>",
+              "children": []
+            },
+            {
+              "name": "<delete-my-article><custom>",
+              "url": "/delete-article/<pk>",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Write an Article",
+          "url": "/article",
+          "children": []
+        },
+        {
+          "name": "Login to Narrow Gate",
+          "url": "/login",
+          "children": [
+            {
+              "name": "Create an Account",
+              "url": "/signup",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

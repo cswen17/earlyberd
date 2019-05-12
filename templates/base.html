@@ -1,0 +1,77 @@
+{% load bootstrap4 %}
+{% load static %}
+{% load author_transforms %}
+{% load breadcrumbs %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+<!-- BEGIN NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand mr-auto" href="/">
+        <img src="{% static 'logoplaceholder.png' %}" /></a>
+    <a class="
+        nav-link navbar-text float-sm-left font-weight-bold
+        text-uppercase" href="/articles">BROWSE</a>
+    {% if user.is_authenticated %}
+    <div class="nav-item dropdown">
+        <a class="
+            dropdown-toggle dropdown-toggle-split
+            nav-link border-left px-auto btn btn-light"
+            href="#"
+            data-role="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+            data-toggle="dropdown"
+            style="width: 78px;">
+            <img class="mx-auto rounded-circle"
+                src="{{ user|avatar:user.id }}"
+                height="36px" width="36px"/>
+            </a>
+        <div class="dropdown-menu" aria-labelledBy="profileDropdown">
+            <h5 class="font-weight-bold dropdown-item">
+                Hi, {{ user.first_name }}
+                </h3>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-header font-weight-bold" href="/author/{{ user.id }}">
+                Your Account
+                </a>
+            <a class="dropdown-header font-weight-bold" href="/my-articles/{{ user.id }}">
+                Your Articles
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-header font-weight-bold" href="/logout">Log out</a>
+        </div>
+    </div>
+    <a class="
+        nav-link navbar-text float-sm-left font-weight-bold
+        text-uppercase border-left" href="/article">WRITE</a>
+
+    {% else %}
+    <a class="
+        nav-link navbar-text float-sm-left font-weight-bold
+        text-uppercase border-left" href="/login">LOG IN</a>
+    {% endif %}
+
+</nav>
+
+{% breadcrumb as b silent %}
+{% if b %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white">
+        {% for bc in b %}
+        <li class="breadcrumb-item">
+            <a href="{{ bc.url }}">{{ bc.name }}</a>
+        </li>
+        {% endfor %}
+    </ol>
+</nav>
+{% endif %}
+
+{% block content %}
+{% endblock %}
+
+<h1 class="text-white display-1">&nbsp;</h1>
+<nav class="navbar navbar-light bg-dark d-flex mt-4 fixed-bottom">
+    <p class="ml-auto text-light text-align-right">&copy; Narrow Gate 2019</p>
+</nav>

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+{% load bootstrap4 %}
+{% load article_cards %}
+
+<div class="container">
+    <h1>Your Articles</h1>
+    <p class="lead">Articles written by you</p>
+    {% article_card object_list as cards silent per_row[6] include_edit_button include_delete_button group %}
+    {{ cards }}
+    <!--
+    <div class="card-group pl-4">-->
+    {% for article in object_list %}
+    <!--
+        <div class="card shadow-sm mt-4 rounded-0 border-top-0
+            border-left-0 border-right-0" style="width:13.83625rem;">
+            <div class="card-img-top"
+                 style="height: 124px;
+                        background-image: url('{% static article.cover_image_url %}');">
+            </div>
+
+            <div class="card-body">
+                <div class="d-flex">
+                    <a class="
+                        stretched-link text-muted
+                        font-weight-bold"
+                        href="/article/{{ article.uuid }}">
+                        {{ article.short_title }}
+                    </a>
+                </div>
+                <span class="badge badge-danger">
+                    <a href="/edit-article/{{ article.uuid }}"
+                       class="font-weight-bold text-white">
+                        Edit
+                    </a>
+                </span>
+                <span class="badge badge-dark">
+                    <a class="text-white"
+                        href="/delete-article/{{ article.uuid }}">
+                        Delete
+                    </a>
+                </span>
+            </div>
+        </div>
+    -->
+
+    {% empty %}
+    <hr class="invisible" />
+    <p>There are no articles associated with your account yet</p>
+
+    {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

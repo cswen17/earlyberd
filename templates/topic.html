@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+{% load breadcrumbs %}
+
+{% breadcrumb as b silent custom[/reading-list/<id>] %}
+<ol class="breadcrumb">
+    {% for bc in b %}
+    <li class="breadcrumb-item">
+        <a href="{{ bc.url }}">{{ bc.name }}</a>
+    </li>
+    {% endfor %}
+    <li class="breadcrumb-item">
+        <a href="#">{{ reading_list.name }}</a>
+    </li>
+</ol>
+
+<div class="container">
+    <h1 class="display-4">{{ reading_list.name }}</h1>
+    <p class="lead">{{ reading_list.description }}</p>
+
+    {% for article in articles %}
+    {% cycle '1' '2' '3' '4' '5' '6' as article_column silent %}
+
+    {% if article_column == '1' %}
+    <div class="card-group">
+    {% endif %}
+
+        <div class="card shadow-sm rounded-0 border-top-0
+            border-left-0 border-right-0" style="width:13.83625rem;">
+            <div class="card-img-top"
+                style="
+                    height: 124px;
+                    background-image: url(
+                        {% static article.cover_image_url %});">
+            </div>
+            <div class="card-body text-decoration-none">
+                <a class="
+                   stretched-link text-muted
+                   font-weight-bold"
+                    href="/article/{{ article.uuid }}">
+                    {{ article.short_title }}
+                </a>
+                <span class="badge badge-white text-muted text-lighter">
+                {{ article.author }}
+                </span>
+            </div>
+        </div>
+
+    {% if forloop.last or article_column == '6' %}
+    </div>
+    <hr class="invisible" />
+    {% endif %}
+
+    {% endfor %}
+
+
+{% endblock %}

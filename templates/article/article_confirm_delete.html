@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+{% load bootstrap4 %}
+{% load static %}
+
+<div class="container mt-4">
+    <h1>Are you sure you want to delete this article?</h1>
+    <form method="POST">
+    {% csrf_token %}
+    <p>It will be removed from these reading lists: </p>
+    <ul>
+        {% for reading_list in object.reading_lists.all %}
+        <li>{{ reading_list.name }}</li>
+        {% endfor %}
+    </ul>
+    <input type="submit" class="btn btn-block btn-dark text-white" value="Confirm Delete" />
+    </form>
+</div>
+
+{% endblock %}

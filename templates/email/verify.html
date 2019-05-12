@@ -1,0 +1,19 @@
+<p>Hi {{ author.full_name }},</p>
+
+<p>Thank you for signing up to be an author for Narrow Gate. Please click the verification link below:</p>
+
+<a href="{{ author.generate_email_validation_link }}">Verify Email Address</a>
+
+<p>
+If the link above does not work, copy and paste the following address
+into your browser:
+</p>
+
+<p>
+{{ author.generate_email_validation_link }}
+</p>
+
+<p>We look forward to reading your work.</p>
+
+<p>Thanks,</p>
+<p>Narrow Gate</p>

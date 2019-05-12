@@ -1,0 +1,311 @@
+{% load static %}
+
+<span
+    id="widget-prefix-{{ widget.prefix }}"
+    class="invisible"
+    data-prefix="{{ widget.prefix }}">
+</span>
+
+{% if widget.is_large_croppie %}
+
+    {% if widget.value %}
+    <div style="height: 256px;">
+        <img 
+         class="{{ widget.prefix }}-croppie-default-container"
+            data-imagename="{{ widget.cover_image_filename }}"
+            src="{% static widget.cover_image_url %}"
+            height="{{ widget.croppie_height }}"
+            width="{{ widget.croppie_width }}"/>
+        <span class="{{ widget.prefix }}-preloaded-croppie"></span>
+    </div>
+    {% else %}
+    <div
+        style="height:0;"
+        class="
+        invisible
+        {{ widget.croppie_container_name }}
+        {{ widget.prefix }}-croppie-default-container">
+    </div>
+    <div
+        style="height: 256px;"
+        class="
+        {{ widget.prefix }}-preview-message
+        mb-4
+        d-flex border rounded border-light">
+        <h1 class="my-auto mx-auto display-2 font-weight-bold text-light">
+        Preview
+        </h1>
+    </div>
+    {% endif %}
+
+{% endif %}
+
+<input
+    type="file"
+    accept="image/*"
+    class="
+        {{ widget.prefix }}-croppie-upload
+        {{ widget.prefix }}-upload-image-to-be-cropped"
+    value="{{ widget.upload_message }}" />
+
+<!-- hidden input for form submission -->
+<input
+    type="hidden"
+    name="{{ widget.cover_image_name }}"
+    id="{{ widget.cover_image_id }}"
+    class="invisible {{ widget.prefix }}-form-submit-input"
+    value="" />
+<input
+    type="hidden"
+    name="{{ widget.cover_image_metadata_name }}"
+    class="invisible {{ widget.prefix }}-cover-image-name"
+    value="" />
+
+{% if widget.is_image_linked %}
+<input
+    type="checkbox"
+    class="{{ widget.prefix }}-croppie-linked"
+    id="{{ widget.linked_id }}" />
+<label for="{{ widget.linked_id }}">{{ widget.linked_message }}</label>
+{% endif %}
+
+{% if not widget.is_large_croppie %}
+<div style="
+        height: {{ widget.croppie_height }}px;
+        width: {{ widget.croppie_width }}px; ">
+
+    {% if widget.value %}
+    <img 
+        class="{{ widget.prefix }}-croppie-default-container"
+        data-imagename="{{ widget.cover_image_filename }}"
+        src="{% static widget.cover_image_url %}"
+        height="{{ widget.croppie_height }}"
+        width="{{ widget.croppie_width }}"/>
+    <span class="{{ widget.prefix }}-preloaded-croppie"></span>
+    {% else %}
+    <div
+        style="height:0;"
+        class="
+        invisible
+        {{ widget.croppie_container_name }}
+        {{ widget.prefix }}-croppie-default-container">
+    </div>
+    <div
+        style="
+            height: 124px;
+            width: 256px;"
+        class="
+        {{ widget.prefix }}-preview-message mb-4
+        d-flex border rounded border-light">
+        <h3 class="my-auto mx-auto display-4 font-weight-bold text-light">
+        Preview
+        </h3>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+<script>
+
+{{ widget.prefix }}PrefixSpan = document.getElementById(
+    'widget-prefix-{{ widget.prefix }}').dataset.prefix;
+
+
+function {{ widget.prefix }}DemoUpload() {
+
+    function pref(className) {
+        className = className.substring(1);
+        result = '.' + {{ widget.prefix }}PrefixSpan + '-' + className;
+        return result;
+    }
+
+    var $uploadCrop;
+
+    if ($(pref('.preloaded-croppie')).length == 0) {
+        $uploadCrop = $(pref('.croppie-default-container')).croppie({
+          boundary: {
+              width: {{ widget.croppie_width }},
+              height: {{ widget.croppie_height }}
+          },
+          viewport: {
+              width: {{ widget.croppie_width }},
+              height: {{ widget.croppie_height }}
+          },
+          enableExif: true,
+          mouseWheelZoom: 'ctrl'
+        }).ready(function() {
+            $('.croppie-container').click(function() {
+                prepareCrop(null, null, {});
+            });
+        });
+    }
+
+
+    function readFile(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+              $(pref('.preview-message'))
+                  .addClass('invisible')
+                  .removeClass('mb-4')
+                  .css('height', '0');
+              $(pref('.croppie-default-container'))
+                  .removeClass('invisible')
+                  .css('height', '256px')
+                  .addClass('ready');
+              $uploadCrop.croppie('bind', {
+                  url: e.target.result
+              }).then(function(){
+                  console.log('jQuery bind complete');
+              });
+          }
+
+          reader.readAsDataURL(input.files[0]);
+
+      } else {
+          console.log(
+              "Sorry - you're browser doesn't support " +
+              "the FileReader API");
+      }
+    }
+
+    function readFileAsync(input, callback, ...callbackArgs) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $(pref('.preview-message'))
+                    .addClass('invisible')
+                    .removeClass('mb-4')
+                    .css('height', '0');
+                $(pref('.croppie-default-container'))
+                    .removeClass('invisible')
+                    .css('height', '256px')
+                    .addClass('ready');
+                $uploadCrop.croppie('bind', {
+                    url: e.target.result
+                }).then(function() {
+                    console.log('jQuery bind complete');
+                    return callback(...callbackArgs);
+                });
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            console.log(
+                "Sorry - you're browser doesn't support " +
+                "the FileReader API");
+            return callback(...callbackArgs);
+        }
+    }
+
+    function prepareCrop(e, cropData, options) {
+        // e is a click event belonging to the DONE button
+        // Need to find the upload button - results get stored here
+        if (options && options.tag) {
+            console.log(options.tag);
+        }
+        console.log('got into event listener');
+
+
+        // Need to find the croppie result
+        $(pref('.croppie-default-container')).croppie('result', {
+            'type': 'blob',
+            'size': {
+                'width': {{ widget.croppie_width }},
+                'height': {{ widget.croppie_height }}
+            }
+        }).then(function (response) {
+            // Attaches the croppie result to the hidden input value
+            reader = new FileReader();
+            reader.addEventListener("loadend", function() {
+                fileData = reader.result;
+                $hiddenUpload = $(pref('.form-submit-input'))[0];
+                $hiddenName = $(pref('.cover-image-name'))[0];
+                $uploadInput = $(pref('.upload-image-to-be-cropped'))[0];
+                imageName = findCropName(
+                    $uploadInput, $hiddenName, options);
+                $hiddenUpload.value = fileData;
+                $hiddenName.value = imageName;
+            });
+            reader.readAsDataURL(response);
+            console.log('file bind complete');
+        });
+    }
+
+    function findCropName($uploadInput, $hiddenName, options) {
+        if (options && options.preValue) {
+            console.log('----');
+            console.log('got into prevalue case ' + options.preValue);
+            console.log('my prefix is ' + pref('.debug'));
+            console.log('----');
+
+            preValue = options.preValue;
+            $hiddenName.value = preValue;
+            return preValue;
+        }
+        var uploadInputValue = $uploadInput.value;
+        var uploadPathParts = uploadInputValue.split('\\');
+        var last = uploadPathParts.length - 1;
+        imageName = uploadPathParts[last];
+        if (imageName.length === 0) {
+            // case where $uploadInput File Input is empty
+            fallback = $(pref('.croppie-default-container'))
+                .data('imagename');
+            return fallback;
+        }
+        return imageName;
+    }
+
+    $(pref('.upload-image-to-be-cropped'))
+        .on('change', function () { 
+            readFileAsync(this, prepareCrop, null, null, {});
+        });
+    //console.log('got here too');
+    
+    $('.cr-image').attr('onerror', function () {
+        this.style.display='none';
+    });
+
+    try {
+        if ($(pref('.preloaded-croppie')).length > 0) {
+            console.log('got into preloaded-croppie case');
+            $uploadCrop = $(pref('.croppie-default-container')).croppie({
+                boundary: {
+                  width: {{ widget.croppie_width }},
+                  height: {{ widget.croppie_height }}
+                },
+                viewport: {
+                  width: {{ widget.croppie_width }},
+                  height: {{ widget.croppie_height }}
+                },
+                enableExif: true,
+                mouseWheelZoom: 'ctrl'
+            }).ready(function() {
+                $(pref('.croppie-container')).click(function() {
+                    prepareCrop(null, null, {});
+                });
+            });
+
+            var imageName = $(pref('.croppie-default-container'))
+                .data('imagename');
+            console.log('********');
+            console.log($(pref('.croppie-default-container')));
+            console.log('********');
+            prepareCrop(
+                null,
+                null,
+                {"preValue": imageName ,
+                    "tag": "PRELOADED" + pref(".debug")}
+            );
+        }
+    } catch (croppieException) {
+        console.log(croppieException);
+    }
+}
+
+{{ widget.prefix }}DemoUpload();
+</script>

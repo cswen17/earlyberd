@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+{% load article_cards %}
+
+<div class="container">
+    <h1 class="display-4">All Articles</h1>
+    <p class="lead">A collection of articles for Christian Life</p>
+
+    {% article_card object_list as cards silent per_row[4] include_author_name deck %}
+    {{ cards }}
+
+    <!-- BEGIN READING LISTS -->
+    <hr class="invisible" />
+    <h1 class="display-4">
+        All Reading Lists
+    </h1>
+    <p class="lead">
+        Explore articles grouped by a curated list to read
+    </p>
+    
+    {% for reading_list in reading_lists %}
+
+    <div class="position-relative">
+
+        <button class="btn btn-sm btn-danger position-absolute rounded-0 t    ext-uppercase" style="z-index: 600;">{{ reading_list.name|upper }}</button>
+
+        <a class="btn btn-sm btn-white rounded-0 position-absolute float-right text-muted font-weight-bold" style="z-index: 600; right: 0px; top: -8px;" href="/reading-list/{{ reading_list.id }}">More &#10230;</a>
+
+        <div class="card-group pl-4">
+            {% for article in reading_list.articles %}
+            <div class="card shadow-sm mt-4 rounded-0 border-top-0
+                border-left-0 border-right-0" style="width:13.83625rem;">
+                <div class="card-img-top"
+                     style="height: 124px;
+                            background-image: url('{% static article.cover_image_url %}');">
+                </div>
+
+                <div class="card-body">
+                    <div class="d-flex">
+                        <a class="
+                            stretched-link text-muted
+                            font-weight-bold"
+                            href="/article/{{ article.uuid }}">
+                            {{ article.short_title }}
+                        </a>
+                    </div>
+                    <span class="badge badge-white text-muted text-lighter">
+                        {{ article.author }}
+                    </span>
+
+                </div>
+            </div>
+            {% endfor %} 
+
+        </div>
+    </div>
+
+    <hr class="invisible" />
+    {% endfor %}
+</div>
+{% endblock %}
