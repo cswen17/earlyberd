@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.core.files.images import ImageFile
+from django.core.files.uploadedfile import UploadedFile
 
 from .form_utils import (
     CoverImageField,
@@ -35,10 +37,17 @@ class ArticleForm(forms.ModelForm):
 
     def clean_cover_image(self):
         cleaned_data = self.cleaned_data
-        cover_image = cleaned_data['cover_image']
-        image = getattr(cover_image, 'image', None)
+        tmp_cover_image = cleaned_data['cover_image']
+        if isinstance(tmp_cover_image, UploadedFile):
+            print('$$$Got here')
+            ret_val = ImageFile(tmp_cover_image)
+            print('$$$')
+            print(dir(ret_val))
+            print('$$$')
+            return ret_val
+        image = getattr(tmp_cover_image, 'image', None)
         if not image:
-            return cover_image
+            return tmp_cover_image
         height = image.height
         width = image.width
         """
@@ -49,11 +58,22 @@ class ArticleForm(forms.ModelForm):
             raise ValidationError(
                 'Invalid width {}. Must be < 256'.format(width))
         """
-        return cover_image
+        return tmp_cover_image
+
+    def clean_cover_image_thumbnail(self):
+        thumbnail = self.cleaned_data['cover_image_thumbnail']
+        if isinstance(thumbnail, UploadedFile):
+            print('%%%Got here')
+            return ImageFile(thumbnail)
+        return thumbnail
 
     def save(self, commit=True):
         instance = super(ArticleForm, self).save(commit=commit)
         reading_lists = self.cleaned_data['reading_lists']
+        covimg = self.cleaned_data['cover_image']
+        print('########')
+        print(covimg.read())
+        print('########')
         for reading_list in reading_lists:
             reading_list.articles.add(instance)
             reading_list.save()

@@ -7,6 +7,7 @@ from django.core.files.uploadedfile import UploadedFile
 
 
 IMAGE_HEADER = 'data:image/png;base64,'
+JPEG_IMAGE_HEADER = 'data:image/jpeg;base64'
 
 class UserWidget(forms.widgets.Widget):
     template_name = 'user_subform.html'
@@ -234,24 +235,36 @@ class CoverImageWidget(forms.widgets.Widget):
         """
         Returns the cropped image, its height, and its width
         """
-        cover_image_binascii = data[self.cover_image_name]
-        cover_image_binascii = cover_image_binascii[len(IMAGE_HEADER):]
-        cover_image_binary = a2b_base64(cover_image_binascii) 
-        print('-------')
-        print(cover_image_binary)
-        print('-------')
-        
         image_name = data.get(
             self.cover_image_metadata_name, 'default.jpg')
         content_type, encoding = guess_type(image_name)
 
+        image_header = IMAGE_HEADER
+
+        cover_image_binascii = data[self.cover_image_name]
+        cover_image_binascii = cover_image_binascii[len(image_header):]
+        cover_image_binary = a2b_base64(cover_image_binascii) 
+        print('-------')
+        print(self.cover_image_name)
+        print(data[self.cover_image_name])
+        print(cover_image_binary)
+        print('-------')
+        
+
         # create a  file
+        """
         named_temp_file = NamedTemporaryFile() 
         size = named_temp_file.write(cover_image_binary)
+        """
+        named_file = open('tmp-{}'.format(image_name), 'w+b')
+        size = named_file.write(cover_image_binary)
+        named_file.close()
+        tf = open('tmp-{}'.format(image_name), 'r+b')
         image = UploadedFile(
-            named_temp_file,
+            tf,
+            # named_temp_file,
             name,
-            image_name,
+            'tmp-{}'.format(image_name),
             content_type,
             size,
             encoding,
