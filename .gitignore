@@ -6,3 +6,4 @@
 db.sqlite3
 credentials.json
 env/*
+env/lib/*
