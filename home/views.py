@@ -1,7 +1,15 @@
+from json.tool import json
+
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseNotFound, HttpResponseRedirect
+from django.core.serializers import serialize
+from django.http import (
+    HttpResponseNotFound,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import render
 from django.template.response import SimpleTemplateResponse
+from django.templatetags.static import static
 from django.views import View
 from django.views.generic.edit import CreateView, FormView
 
@@ -28,6 +36,23 @@ class HomeView(View):
                 'user': request.user,
             }
         )
+
+
+class QuoteView(View):
+
+    """
+    A View for Quote model objects intended to supply the React
+    frontend with a model object
+    """
+
+    def get(self, request, *args, **kwargs):
+        queryset = Quote.single.filter(id=1)
+        serialized_fields = serialize("json", queryset)
+        loaded_fields = json.loads(serialized_fields)
+        image_address = loaded_fields[0]['fields']['image']
+        image_address = image_address.split('/')[-1]
+        loaded_fields[0]['fields']['image'] = static(image_address)
+        return JsonResponse(loaded_fields, safe=False)
 
 
 class LoginView(FormView):

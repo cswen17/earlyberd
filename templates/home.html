@@ -3,6 +3,7 @@
 {% load static %}
 {% load article_cards %}
 
+<!-- REACT EXPERIMENTATION -->
 <!-- BEGIN QUOTES -->
 <div class="jumbotron jumbotron-fluid"
      style="background-image:
@@ -52,24 +53,10 @@
 </div>
 
 <!-- BEGIN QUOTE -->
-<div class="jumbotron jumbotron-fluid my-5 p-0 d-flex shadow-lg">
-        <div class="px-5 w-50 align-self-center">
-            <h2 class="font-weight-bold">
-                {{ quote.comment }}
-            </h2>
-            <p class="lead my-3">
-                {{ quote.quote }}
-            </p>
-            <button class="rounded-sm btn btn-dark btn-lg text-decoration-none">
-                {{ quote.quoter }}
-            </button>
-        </div>
-        <div class="ml-auto mr-5 flex-fill" style="
-            height: 349px;
-            width: 680px;
-            background-image: url({% static quote.cover_image_url %})">
-        </div>
-</div>
+<div id="quote_container"></div>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+<script src="{% static 'quote.js' %}"></script>
 
 <!-- BEGIN READING LISTS -->
 <div class="container-fluid">
