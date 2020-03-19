@@ -21,6 +21,7 @@ from article import views as article_views
 from home.views import (
     HomeView,
     LoginView,
+    QuoteView,
     SignupView,
     EmailValidationView,
     logout_view,
@@ -40,6 +41,7 @@ urlpatterns = [
     path('signup', SignupView.as_view()),
     path('login', LoginView.as_view()),
     path('logout', logout_view),
+    path('quote', QuoteView.as_view()),
     path('verify-email', EmailValidationView.as_view(), name='verify-email'),
     path('', HomeView.as_view()),
 ]
